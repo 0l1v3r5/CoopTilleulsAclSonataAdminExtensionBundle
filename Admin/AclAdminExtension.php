@@ -13,6 +13,7 @@ namespace CoopTilleuls\Bundle\AclSonataAdminExtensionBundle\Admin;
 
 use Doctrine\DBAL\Connection;
 use Sonata\AdminBundle\Admin\AdminExtension;
+use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -23,12 +24,18 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
+if (class_exists(AbstractAdminExtension::class)) {
+    abstract class InternalAbstractClass extends AbstractAdminExtension {}
+} else {
+    abstract class InternalAbstractClass extends AdminExtension {}
+}
+
 /**
  * Admin extension filtering the list.
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AclAdminExtension extends AdminExtension
+class AclAdminExtension extends InternalAbstractClass
 {
     /**
      * @var SecurityContextInterface|TokenStorageInterface
